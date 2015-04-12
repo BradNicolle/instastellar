@@ -25,9 +25,10 @@
   
   <servlet>
 	  <servlet-name>cardRetriever</servlet-name>
-	  <servlet-class>
+	  <!-- <servlet-class>
 	  	com.spaceappschallenge.adelaide.server.CardRetriever
-	  </servlet-class>
+	  </servlet-class> -->
+	  <jsp-file>/CardRetriever.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
   	<servlet-name>cardRetriever</servlet-name>

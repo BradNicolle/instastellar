@@ -127,7 +127,7 @@ public class InstastellarClientTest implements EntryPoint {
 				// Then, we send the input to the server.
 				selectButton.setEnabled(false);
 				serverResponseLabel.setText("");
-				Card card = new Card();
+				Card card = new Card("http://apod.nasa.gov/apod/image/1504/tafreshi_MG_3456Pc2s.jpg", "NASA", "Some nice stuff", "Lots of love");
 				cardService.submitCard(card,
 						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {

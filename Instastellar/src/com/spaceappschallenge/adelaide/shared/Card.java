@@ -26,6 +26,7 @@ public class Card implements Serializable {
 		this.url = url;
 		this.source = source;
 		this.description = description;
+		this.message = message;
 	}
 
 	public Long getId() {
