@@ -1,4 +1,4 @@
-package com.spaceappschallenge.adelaide.server;
+package com.spaceappschallenge.adelaide.client;
 
 public class ImageFetchUtils {
 	public static String executeGet(String url) {

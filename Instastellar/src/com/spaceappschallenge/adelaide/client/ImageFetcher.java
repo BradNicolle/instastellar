@@ -1,4 +1,4 @@
-package com.spaceappschallenge.adelaide.server;
+package com.spaceappschallenge.adelaide.client;
 
 import java.util.Date;
 

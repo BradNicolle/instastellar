@@ -66,9 +66,16 @@ h1 {
 }
 
 #imageThumb{
-	width: 200px;
+	width: 100px;
+	margin: 2px 2px 2px;
+}
+
+#imageThumbSelected{
+	width: 100px;
+	border: 2px solid blue;
 }
 
 #imageView{
 	width: 400px;
+	border-style:none;
 }

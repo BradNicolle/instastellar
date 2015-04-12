@@ -9,13 +9,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.spaceappschallenge.adelaide.shared.Card;
 
 public class ImageSwitcher extends Composite implements ClickHandler {
-	private ListBox listBox = new ListBox();
 	private LinkedList<Card> cards = new LinkedList<>();
 	private FlexTable thumbs = new FlexTable();
 	private LinkedList<String> sources = new LinkedList<>();
@@ -23,6 +21,7 @@ public class ImageSwitcher extends Composite implements ClickHandler {
 	private Image imageView = new Image();
 	HorizontalPanel mainPanel = new HorizontalPanel();
 	ScrollPanel imagePanel = new ScrollPanel();
+	private Image selectedImage;
 
 
 	public ImageSwitcher() {
@@ -31,9 +30,8 @@ public class ImageSwitcher extends Composite implements ClickHandler {
 		VerticalPanel sourceList = new VerticalPanel();
 		ScrollPanel sourcePanel = new ScrollPanel();
 		sourcePanel.add(sourceList);
-		imagePanel.setSize("400px", "400px");
+		imagePanel.setSize("250px", "400px");
 		sourcePanel.setHeight("400px");
-		imageView.setVisible(false);
 		imageView.getElement().setId("imageView");
 
 		// TESTING
@@ -94,18 +92,23 @@ public class ImageSwitcher extends Composite implements ClickHandler {
 	}
 
 	private void fill() {
+		imageView.setUrl("");
+		if(selectedImage!=null){
+			selectedImage.getElement().setId("imageThumb");
+			selectedImage = null;
+		}
+		
 		thumbs.removeAllRows();
 		thumbs.clear();
-		imageView.setVisible(false);
-		imageView.setUrl("");
+
 		int i=0;
 		for (Card c : cards) {
 			if (currentSource.contains(c.source)) {
 				Image image = new Image();
-				image.getElement().setId("imageItem");
+				image.getElement().setId("imageThumb");
 				image.setUrl(c.url);
 				image.addClickHandler(this);
-				thumbs.setWidget(i / 3, i % 3, image);
+				thumbs.setWidget(i / 2, i % 2, image);
 				i++;
 			}
 		}
@@ -113,11 +116,15 @@ public class ImageSwitcher extends Composite implements ClickHandler {
 
 	@Override
 	public void onClick(ClickEvent event) {
-		Image image = (Image) event.getSource();
-		if(!imageView.isVisible()){
-			imageView.setVisible(true);
+		if(selectedImage!=null){
+			selectedImage.getElement().setId("imageThumb");
+			selectedImage = null;
 		}
+		
+		Image image = (Image) event.getSource();
 		imageView.setUrl(image.getUrl());
+		selectedImage = image;
+		selectedImage.getElement().setId("imageThumbSelected");
 	}
 
 }
