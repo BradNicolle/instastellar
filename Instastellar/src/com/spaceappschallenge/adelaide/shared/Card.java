@@ -15,14 +15,14 @@ public class Card implements Serializable {
 	
 	private static final long serialVersionUID = -1841062682596475325L;
 	public static enum Source {NASA}
-	private String url;
-	private Source source;
-	private String description;
-	private String message;
+	public String url;
+	public String source;
+	public String description;
+	public String message;
 	
 	public Card() {}
 	
-	public Card(String url, Source source, String description, String message) {
+	public Card(String url, String source, String description, String message) {
 		this.url = url;
 		this.source = source;
 		this.description = description;
@@ -40,11 +40,11 @@ public class Card implements Serializable {
 		this.url = url;
 	}
 
-	public Source getSource() {
+	public String getSource() {
 		return source;
 	}
 
-	public void setSource(Source source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 
