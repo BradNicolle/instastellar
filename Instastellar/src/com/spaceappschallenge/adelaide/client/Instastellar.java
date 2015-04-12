@@ -54,6 +54,7 @@ public class Instastellar implements EntryPoint {
 		// We can add style names to widgets
 		selectButton.getElement().setId("selectButton");
 		stepOneLabel.getElement().setId("stepLabel");
+		datePicker.setYearAndMonthDropdownVisible(true);
 		
 		//Add to stepone
 		stepOne.getElement().setAttribute("align", "center");

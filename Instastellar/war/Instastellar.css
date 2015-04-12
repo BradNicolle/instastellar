@@ -13,6 +13,8 @@ h1 {
 }
 
 .gwt-DatePicker .datePickerDay,
+.datePickerMonth,
+.datePickerYear,
 .datePickerWeekdayLabel,
 .datePickerWeekendLabel{
 	font-size: 150%;
