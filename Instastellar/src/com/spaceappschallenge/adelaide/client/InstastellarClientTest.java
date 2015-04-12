@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -21,7 +22,7 @@ import com.spaceappschallenge.adelaide.shared.Card;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Instastellar implements EntryPoint {
+public class InstastellarClientTest implements EntryPoint {
 	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
@@ -39,7 +40,6 @@ public class Instastellar implements EntryPoint {
 	
 	private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel stepOne = new VerticalPanel();
-	private HorizontalPanel imagePanel = new HorizontalPanel();
 	
 	/**
 	 * This is the entry point method.
@@ -66,13 +66,10 @@ public class Instastellar implements EntryPoint {
 		//Add to mainPanel
 		mainPanel.add(stepOne);
 		
-		imagePanel.add(new ImageSwitcher());
-		
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 
 		RootPanel.get("mainPanel").add(mainPanel);
-		RootPanel.get("imagePanel").add(imagePanel);
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
@@ -130,7 +127,6 @@ public class Instastellar implements EntryPoint {
 				// Then, we send the input to the server.
 				selectButton.setEnabled(false);
 				serverResponseLabel.setText("");
-				
 				Card card = new Card();
 				cardService.submitCard(card,
 						new AsyncCallback<String>() {
