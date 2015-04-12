@@ -1,8 +1,11 @@
 package com.spaceappschallenge.adelaide.client;
 
+<<<<<<< HEAD
 import java.util.Date;
 
 import com.spaceappschallenge.adelaide.shared.FieldVerifier;
+=======
+>>>>>>> origin/feat/request
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -10,17 +13,27 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+<<<<<<< HEAD
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+=======
+import com.google.gwt.i18n.client.DateTimeFormat;
+>>>>>>> origin/feat/request
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+<<<<<<< HEAD
 import com.google.gwt.user.datepicker.client.DatePicker;
+=======
+import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.datepicker.client.DatePicker;
+import com.spaceappschallenge.adelaide.shared.FieldVerifier;
+>>>>>>> origin/feat/request
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -40,13 +53,17 @@ public class Instastellar implements EntryPoint {
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
 
+	
+	private HorizontalPanel mainPanel = new HorizontalPanel();
+	private VerticalPanel stepOne = new VerticalPanel();
+	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send");
-		final TextBox nameField = new TextBox();
-		nameField.setText("GWT User");
+		final Button selectButton = new Button("Select");
+		final DatePicker datePicker = new DatePicker();
+		final Label stepOneLabel = new Label("Step 1");
 		final Label errorLabel = new Label();
 		final DatePicker datePicker = new DatePicker();
 		datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
@@ -58,10 +75,24 @@ public class Instastellar implements EntryPoint {
 		});
 
 		// We can add style names to widgets
-		sendButton.addStyleName("sendButton");
-
+		selectButton.getElement().setId("selectButton");
+		stepOneLabel.getElement().setId("stepLabel");
+		datePicker.setYearAndMonthDropdownVisible(true);
+		
+		//Add to stepone
+		stepOne.getElement().setAttribute("align", "center");
+		stepOne.setStyleName("mainPanel");
+		stepOne.add(stepOneLabel);
+		stepOne.add(datePicker);
+		stepOne.add(selectButton);
+		
+		
+		//Add to mainPanel
+		mainPanel.add(stepOne);
+		
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
+<<<<<<< HEAD
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("DatePickerContainer").add(datePicker);
@@ -70,6 +101,10 @@ public class Instastellar implements EntryPoint {
 		nameField.setFocus(true);
 		nameField.selectAll();
 
+=======
+		RootPanel.get("mainPanel").add(mainPanel);
+		
+>>>>>>> origin/feat/request
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
@@ -93,8 +128,8 @@ public class Instastellar implements EntryPoint {
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
-				sendButton.setEnabled(true);
-				sendButton.setFocus(true);
+				selectButton.setEnabled(true);
+				selectButton.setFocus(true);
 			}
 		});
 
@@ -122,14 +157,19 @@ public class Instastellar implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = nameField.getText();
+				String textToServer = "No date";
+				DateTimeFormat format = DateTimeFormat.getFormat("yyyyMMdd");
+				if(datePicker.getValue()!=null){
+					textToServer = "" + format.format(datePicker.getValue());
+				}
+				
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
 				}
 
 				// Then, we send the input to the server.
-				sendButton.setEnabled(false);
+				selectButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
 				greetingService.greetServer(textToServer,
@@ -137,7 +177,7 @@ public class Instastellar implements EntryPoint {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
 								dialogBox
-										.setText("Remote Procedure Call - Failure");
+										.setText("Couldn't retrieve Images");
 								serverResponseLabel
 										.addStyleName("serverResponseLabelError");
 								serverResponseLabel.setHTML(SERVER_ERROR);
@@ -159,7 +199,6 @@ public class Instastellar implements EntryPoint {
 
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
-		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
+		selectButton.addClickHandler(handler);
 	}
 }
