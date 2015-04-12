@@ -28,10 +28,11 @@ public class ImageSwitcher extends Composite implements ClickHandler {
 	public ImageSwitcher() {
 
 		HorizontalPanel mainPanel = new HorizontalPanel();
+		mainPanel.setWidth("800px");
 		VerticalPanel sourceList = new VerticalPanel();
 		ScrollPanel sourcePanel = new ScrollPanel();
 		sourcePanel.add(sourceList);
-		imagePanel.setSize("400px", "400px");
+		imagePanel.setSize("250px", "400px");
 		sourcePanel.setHeight("400px");
 		imageView.setVisible(false);
 		imageView.getElement().setId("imageView");
@@ -102,10 +103,10 @@ public class ImageSwitcher extends Composite implements ClickHandler {
 		for (Card c : cards) {
 			if (currentSource.contains(c.source)) {
 				Image image = new Image();
-				image.getElement().setId("imageItem");
+				image.getElement().setId("imageThumb");
 				image.setUrl(c.url);
 				image.addClickHandler(this);
-				thumbs.setWidget(i / 3, i % 3, image);
+				thumbs.setWidget(i / 2, i % 2, image);
 				i++;
 			}
 		}
