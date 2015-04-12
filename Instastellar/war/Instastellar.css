@@ -64,3 +64,11 @@ h1 {
   font-family: sans-serif;
   font-size: 2em;
 }
+
+#imageThumb{
+	width: 200px;
+}
+
+#imageView{
+	width: 400px;
+}

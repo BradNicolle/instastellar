@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -40,6 +39,7 @@ public class Instastellar implements EntryPoint {
 	
 	private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel stepOne = new VerticalPanel();
+	private HorizontalPanel imagePanel = new HorizontalPanel();
 	
 	/**
 	 * This is the entry point method.
@@ -66,10 +66,13 @@ public class Instastellar implements EntryPoint {
 		//Add to mainPanel
 		mainPanel.add(stepOne);
 		
+		imagePanel.add(new ImageSwitcher());
+		
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 
 		RootPanel.get("mainPanel").add(mainPanel);
+		RootPanel.get("imagePanel").add(imagePanel);
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
