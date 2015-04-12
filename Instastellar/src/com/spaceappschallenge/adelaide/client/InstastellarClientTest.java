@@ -22,7 +22,7 @@ import com.spaceappschallenge.adelaide.shared.Card;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Instastellar implements EntryPoint {
+public class InstastellarClientTest implements EntryPoint {
 	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
@@ -127,8 +127,9 @@ public class Instastellar implements EntryPoint {
 				// Then, we send the input to the server.
 				selectButton.setEnabled(false);
 				serverResponseLabel.setText("");
-				/*cardService.generateCards("HEY M8", datePicker.getValue(),
-						new AsyncCallback<Card[]>() {
+				Card card = new Card();
+				cardService.submitCard(card,
+						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
 								dialogBox
@@ -140,15 +141,15 @@ public class Instastellar implements EntryPoint {
 								closeButton.setFocus(true);
 							}
 
-							public void onSuccess(Card[] result) {
+							public void onSuccess(String result) {
 								dialogBox.setText("Remote Procedure Call");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
-								//serverResponseLabel.setHTML(result[0].description + result[0].source + result[0].url);
+								serverResponseLabel.setHTML(result);
 								dialogBox.center();
 								closeButton.setFocus(true);
 							}
-						});*/
+						});
 			}
 		}
 

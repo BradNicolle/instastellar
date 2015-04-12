@@ -22,5 +22,16 @@
   	<servlet-name>cardServiceImpl</servlet-name>
   	<url-pattern>/instastellar/card</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+	  <servlet-name>cardRetriever</servlet-name>
+	  <servlet-class>
+	  	com.spaceappschallenge.adelaide.server.CardRetriever
+	  </servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>cardRetriever</servlet-name>
+  	<url-pattern>/cards/*</url-pattern>
+  </servlet-mapping>
 
 </web-app>
