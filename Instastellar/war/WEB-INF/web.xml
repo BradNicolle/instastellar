@@ -6,19 +6,21 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.spaceappschallenge.adelaide.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/instastellar/greet</url-pattern>
-  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Instastellar.html</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+	  <servlet-name>cardServiceImpl</servlet-name>
+	  <servlet-class>
+	  	com.spaceappschallenge.adelaide.server.CardServiceImpl
+	  </servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>cardServiceImpl</servlet-name>
+  	<url-pattern>instastellar/card</url-pattern>
+  </servlet-mapping>
 
 </web-app>

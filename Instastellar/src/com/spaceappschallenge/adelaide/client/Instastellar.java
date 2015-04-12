@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import com.spaceappschallenge.adelaide.shared.FieldVerifier;
+import com.spaceappschallenge.adelaide.shared.Card;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -34,8 +34,8 @@ public class Instastellar implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
+	private final CardServiceAsync cardService = GWT
+			.create(CardService.class);
 
 	
 	private HorizontalPanel mainPanel = new HorizontalPanel();
@@ -123,23 +123,12 @@ public class Instastellar implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = "No date";
-				DateTimeFormat format = DateTimeFormat.getFormat("yyyyMMdd");
-				if(datePicker.getValue()!=null){
-					textToServer = "" + format.format(datePicker.getValue());
-				}
-				
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
-					return;
-				}
 
 				// Then, we send the input to the server.
 				selectButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer,
-						new AsyncCallback<String>() {
+				cardService.generateCards("HEY M8", datePicker.getValue(),
+						new AsyncCallback<Card[]>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
 								dialogBox
@@ -151,11 +140,11 @@ public class Instastellar implements EntryPoint {
 								closeButton.setFocus(true);
 							}
 
-							public void onSuccess(String result) {
+							public void onSuccess(Card[] result) {
 								dialogBox.setText("Remote Procedure Call");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
+								serverResponseLabel.setHTML(result[0].description + result[0].source + result[0].url);
 								dialogBox.center();
 								closeButton.setFocus(true);
 							}
