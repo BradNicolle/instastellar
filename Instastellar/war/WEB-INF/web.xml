@@ -20,7 +20,7 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>cardServiceImpl</servlet-name>
-  	<url-pattern>instastellar/card</url-pattern>
+  	<url-pattern>/instastellar/card</url-pattern>
   </servlet-mapping>
 
 </web-app>
