@@ -1,5 +1,7 @@
 package com.spaceappschallenge.adelaide.server;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -18,6 +20,12 @@ public class CardServiceImpl extends RemoteServiceServlet implements CardService
 		}
 
 		return Long.toString(card.getId());
+	}
+
+	@Override
+	public Card[] submitDate(String date) {
+		// TODO Auto-generated method stub
+		return new NASAImageFetcher().fetchImages(date);
 	}
 
 }

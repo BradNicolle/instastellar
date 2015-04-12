@@ -4,9 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -14,6 +12,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.spaceappschallenge.adelaide.shared.Card;
@@ -31,16 +30,16 @@ public class Instastellar implements EntryPoint {
 			+ "connection and try again.";
 
 	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 * Create a remote service proxy to talk to the server-side Greeting
+	 * service.
 	 */
-	private final CardServiceAsync cardService = GWT
-			.create(CardService.class);
+	private final CardServiceAsync cardService = GWT.create(CardService.class);
 
-	
 	private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel stepOne = new VerticalPanel();
-	private HorizontalPanel imagePanel = new HorizontalPanel();
-	
+	private VerticalPanel imagePanel = new VerticalPanel();
+	private Card[] receivedImage;
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -49,25 +48,31 @@ public class Instastellar implements EntryPoint {
 		final Label stepOneLabel = new Label("Step 1");
 		final Label errorLabel = new Label();
 		final DatePicker datePicker = new DatePicker();
+		final Label info = new Label("Enter Message");
+		final TextBox inputMessage = new TextBox();
+		final Button done = new Button("Done");
 
 		// We can add style names to widgets
 		selectButton.getElement().setId("selectButton");
 		stepOneLabel.getElement().setId("stepLabel");
 		datePicker.setYearAndMonthDropdownVisible(true);
-		
-		//Add to stepone
+
+		// Add to stepone
 		stepOne.getElement().setAttribute("align", "center");
 		stepOne.setStyleName("mainPanel");
 		stepOne.add(stepOneLabel);
 		stepOne.add(datePicker);
 		stepOne.add(selectButton);
-		
-		
-		//Add to mainPanel
+
+		// Add to mainPanel
 		mainPanel.add(stepOne);
+
+		//imagePanel.add(new ImageSwitcher());
+		imagePanel.add(info);
+		imagePanel.add(inputMessage);
+		imagePanel.add(done);
 		
-		imagePanel.add(new ImageSwitcher());
-		
+
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 
@@ -103,25 +108,49 @@ public class Instastellar implements EntryPoint {
 		});
 
 		// Create a handler for the sendButton and nameField
-		class MyHandler implements ClickHandler, KeyUpHandler {
+		class MyHandler implements ClickHandler {
 			/**
 			 * Fired when the user clicks on the sendButton.
 			 */
 			public void onClick(ClickEvent event) {
-				sendNameToServer();
+				sendDateToServer();
+				//sendNameToServer();
+			}
+
+			private void sendDateToServer() {
+				// First, we validate the input.
+				errorLabel.setText("");
+
+				// Then, we send the input to the server.
+				selectButton.setEnabled(false);
+				serverResponseLabel.setText("");
+				DateTimeFormat format = DateTimeFormat.getFormat("yyMMdd");
+				String date = format.format(datePicker.getValue());
+				cardService.submitDate(date,
+						new AsyncCallback<Card[]>() {
+							public void onFailure(Throwable caught) {
+								// Show the RPC error message to the user
+								dialogBox.setText("Couldn't retrieve Images");
+								serverResponseLabel
+										.addStyleName("serverResponseLabelError");
+								serverResponseLabel.setHTML(SERVER_ERROR);
+								dialogBox.center();
+								closeButton.setFocus(true);
+								selectButton.setEnabled(true);
+							}
+
+							public void onSuccess(Card[] result) {
+								// TODO: Implement stuff
+								selectButton.setEnabled(true);
+								closeButton.setFocus(true);
+								receivedImage = result;
+							}
+						});
 			}
 
 			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendNameToServer();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
+			 * Send the name from the nameField to the server and wait for a
+			 * response.
 			 */
 			private void sendNameToServer() {
 				// First, we validate the input.
@@ -130,35 +159,43 @@ public class Instastellar implements EntryPoint {
 				// Then, we send the input to the server.
 				selectButton.setEnabled(false);
 				serverResponseLabel.setText("");
-				
-				Card card = new Card();
-				cardService.submitCard(card,
-						new AsyncCallback<String>() {
-							public void onFailure(Throwable caught) {
-								// Show the RPC error message to the user
-								dialogBox
-										.setText("Couldn't retrieve Images");
-								serverResponseLabel
-										.addStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(SERVER_ERROR);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
 
-							public void onSuccess(String result) {
-								dialogBox.setText("Remote Procedure Call");
-								serverResponseLabel
-										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-						});
+				cardService.submitCard(receivedImage[0], new AsyncCallback<String>() {
+					public void onFailure(Throwable caught) {
+						// Show the RPC error message to the user
+						dialogBox.setText("Couldn't retrieve Images");
+						serverResponseLabel
+								.addStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(SERVER_ERROR);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+
+					public void onSuccess(String result) {
+						dialogBox.setText("Remote Procedure Call");
+						serverResponseLabel
+								.removeStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(result);
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+				});
 			}
 		}
 
 		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
+		final MyHandler handler = new MyHandler();
+		done.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				if(receivedImage!=null){
+					receivedImage[0].message = inputMessage.getText();
+					handler.sendNameToServer();
+				}
+			}
+		});
 		selectButton.addClickHandler(handler);
 	}
 }
