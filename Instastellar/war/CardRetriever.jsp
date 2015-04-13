@@ -75,7 +75,7 @@ function cardClicked() {
 </div>
 
 <div id="front_text" style="position: absolute; width: 95%; padding-top: 600px; font-family: 'Lora', serif; font-size: 18pt;">
-<%= c.getDescription() %>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 </div>
 
 <div id="back_img" style="width: 95%; visibility: hidden;">

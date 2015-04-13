@@ -81,7 +81,7 @@ public class Instastellar implements EntryPoint {
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Remote Procedure Call");
+		dialogBox.setText("Your Instastellar Card!");
 		dialogBox.setAnimationEnabled(true);
 		final Button closeButton = new Button("Close");
 		// We can set the id of a widget by accessing its Element
@@ -172,10 +172,10 @@ public class Instastellar implements EntryPoint {
 					}
 
 					public void onSuccess(String result) {
-						dialogBox.setText("Remote Procedure Call");
+						dialogBox.setText("Your Instastellar Card!");
 						serverResponseLabel
 								.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
+						serverResponseLabel.setHTML("<a href='/cards/" + result + "'>Image link</a>");
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
